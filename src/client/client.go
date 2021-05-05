@@ -98,9 +98,9 @@ func main() {
 		}
 	}
 	if *conflicts >= 0 {
-		fmt.Println("Uniform distribution")
+		//fmt.Println("Uniform distribution")
 	} else {
-		fmt.Println("Zipfian distribution:")
+		//fmt.Println("Zipfian distribution:")
 		//fmt.Println(test[0:100])
 	}
 
@@ -123,7 +123,7 @@ func main() {
 			log.Fatalf("Error making the GetLeader RPC\n")
 		}
 		leader = reply.LeaderId
-		log.Printf("The leader is replica %d\n", leader)
+		//log.Printf("The leader is replica %d\n", leader)
 	}
 
 	var id int32 = 0
@@ -131,6 +131,8 @@ func main() {
 	args := genericsmrproto.Propose{id, state.Command{state.PUT, 0, 0}, 0}
 
 	before_total := time.Now()
+	fmt.Println(before_total.UnixNano())	
+
 
 	for j := 0; j < *rounds; j++ {
 
@@ -151,7 +153,7 @@ func main() {
 			go waitReplies(readers, leader, n, done)
 		}
 
-		before := time.Now()
+		//before := time.Now()
 
 		for i := 0; i < n+*eps; i++ {
 			dlog.Printf("Sending proposal %d\n", id)
@@ -200,8 +202,8 @@ func main() {
 			err = <-done
 		}
 
-		after := time.Now()
-		fmt.Printf("Round took %v\n", after.Sub(before))
+		//after := time.Now()
+		//fmt.Printf("Round took %v\n", after.Sub(before))
 
 		if *check {
 			for j := 0; j < n; j++ {
@@ -224,14 +226,16 @@ func main() {
 	}
 
 	after_total := time.Now()
-	fmt.Printf("Test took %v\n", after_total.Sub(before_total))
+	//fmt.Printf("Test took %v\n", after_total.Sub(before_total))
+	fmt.Println(after_total.UnixNano())
+
 
 	s := 0
 	for _, succ := range successful {
 		s += succ
 	}
 
-	fmt.Printf("Successful: %d\n", s)
+	//fmt.Printf("Successful: %d\n", s)
 
 	for _, client := range servers {
 		if client != nil {
