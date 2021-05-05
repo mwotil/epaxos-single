@@ -11,13 +11,19 @@ import (
 	"paxosproto"
 	"state"
 	"time"
+//	"fmt"
 )
 
 const CHAN_BUFFER_SIZE = 200000
 const TRUE = uint8(1)
 const FALSE = uint8(0)
 
-const MAX_BATCH = 5000
+const MAX_BATCH = 10
+
+
+var processing = false
+var current int32
+
 
 type Replica struct {
 	*genericsmr.Replica // extends a generic Paxos replica
@@ -155,7 +161,7 @@ var clockChan chan bool
 
 func (r *Replica) clock() {
 	for !r.Shutdown {
-		time.Sleep(1000 * 1000 * 5)
+		time.Sleep(1000*5)
 		clockChan <- true
 	}
 }
@@ -179,10 +185,10 @@ func (r *Replica) run() {
 	}
 
 	clockChan = make(chan bool, 1)
-	go r.clock()
+	//go r.clock()
 
 	onOffProposeChan := r.ProposeChan
-
+	current = -1
 	for !r.Shutdown {
 
 		select {
@@ -192,14 +198,18 @@ func (r *Replica) run() {
 			onOffProposeChan = r.ProposeChan
 			break
 
+		/*
 		case propose := <-onOffProposeChan:
+			if !processing{
 			//got a Propose from a client
 			dlog.Printf("Proposal with op %d\n", propose.Command.Op)
 			r.handlePropose(propose)
 			//deactivate the new proposals channel to prioritize the handling of protocol messages
 			onOffProposeChan = nil
+			processing = false
+			}
 			break
-
+		*/
 		case prepareS := <-r.prepareChan:
 			prepare := prepareS.(*paxosproto.Prepare)
 			//got a Prepare message
@@ -219,6 +229,7 @@ func (r *Replica) run() {
 			//got a Commit message
 			dlog.Printf("Received Commit from replica %d, for instance %d\n", commit.LeaderId, commit.Instance)
 			r.handleCommit(commit)
+			processing = false
 			break
 
 		case commitS := <-r.commitShortChan:
@@ -241,8 +252,31 @@ func (r *Replica) run() {
 			dlog.Printf("Received AcceptReply for instance %d\n", acceptReply.Instance)
 			r.handleAcceptReply(acceptReply)
 			break
+
+		 //case propose := <-onOffProposeChan:
+		default:
+			if len(r.ProposeChan) > 0 {
+				//fmt.Println(len(r.ProposeChan))
+				//propose := <- onOffProposeChan
+                        	if current == -1 || r.instanceSpace[current].status == COMMITTED {
+					propose := <- onOffProposeChan
+					current = r.crtInstance
+                        		//got a Propose from a client
+                        		dlog.Printf("Proposal with op %d\n", propose.Command.Op)
+                        		r.handlePropose(propose)
+                        		//deactivate the new proposals channel to prioritize the handling of protocol messages
+                        		//onOffProposeChan = nil
+                        		//processing = false
+					//time.Sleep(5000)
+                        	}
+			}
+                        break
 		}
 	}
+	//if current == 1{
+	//	fmt.Println("test")
+	//}
+	_ = current
 }
 
 func (r *Replica) makeUniqueBallot(ballot int32) int32 {
