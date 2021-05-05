@@ -425,9 +425,9 @@ func (r *Replica) run() {
 			if len(r.ProposeChan) > 0 {
 				//fmt.Println(len(r.ProposeChan))
 				//propose := <- onOffProposeChan
-                        	if current == -1 || r.instanceSpace[current].status == COMMITTED {
+                        	if current == -1 || r.InstanceSpace[r.Id][current].Status == epaxosproto.COMMITTED {
 					propose := <- onOffProposeChan
-					current = r.crtInstance
+					current = r.crtInstance[r.Id]
                         		//got a Propose from a client
                         		dlog.Printf("Proposal with op %d\n", propose.Command.Op)
                         		r.handlePropose(propose)
