@@ -1,4 +1,5 @@
-NClient=100
+rm log.out
+NClient=20
 NReq=1000
 clientBatchSize=10
 rounds=$((NReq / clientBatchSize))

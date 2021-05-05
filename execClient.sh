@@ -1,3 +1,4 @@
+rm log.out
 NClient=100
 NReq=1000
 clientBatchSize=10
