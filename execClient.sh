@@ -1,5 +1,5 @@
-NClient = 10
-NReq = 1000
+NClient=10
+NReq=1000
 clientBatchSize=1
 rounds=$((NReq / clientBatchSize))
 
