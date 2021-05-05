@@ -131,7 +131,8 @@ func main() {
 	args := genericsmrproto.Propose{id, state.Command{state.PUT, 0, 0}, 0}
 
 	before_total := time.Now()
-	fmt.Println("Start time: %v", before_total.UnixNano())	
+	fmt.Print("Start time: ")
+	fmt.Println(before_total.UnixNano())	
 
 
 	for j := 0; j < *rounds; j++ {
@@ -228,7 +229,10 @@ func main() {
 	after_total := time.Now()
 	//fmt.Printf("Test took %v\n", after_total.Sub(before_total))
 	//fmt.Println(after_total.UnixNano())
-	fmt.Println("Start time: %v", after_total.UnixNano())  
+	//fmt.Println("Start time: %v", after_total.UnixNano())  
+	fmt.Print("End time: ")
+        fmt.Println(after_total.UnixNano())
+
 
 	s := 0
 	for _, succ := range successful {
