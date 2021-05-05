@@ -1,6 +1,6 @@
-NClient=10
+NClient=100
 NReq=1000
-clientBatchSize=1
+clientBatchSize=10
 rounds=$((NReq / clientBatchSize))
 
 for((c=1; c<=$NClient; c++))

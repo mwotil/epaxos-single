@@ -38,6 +38,8 @@ const CHECKPOINT_PERIOD = 10000
 var cpMarker []state.Command
 var cpcounter = 0
 
+var current int32
+
 type Replica struct {
 	*genericsmr.Replica
 	prepareChan           chan fastrpc.Serializable
@@ -291,23 +293,24 @@ func (r *Replica) run() {
 
 	slowClockChan = make(chan bool, 1)
 	fastClockChan = make(chan bool, 1)
-	go r.slowClock()
+	//go r.slowClock()
 
 	//Enabled when batching for 5ms
-	if MAX_BATCH > 100 {
-		go r.fastClock()
-	}
+	//if MAX_BATCH > 100 {
+	//	go r.fastClock()
+	//}
 
 	if r.Beacon {
 		go r.stopAdapting()
 	}
 
 	onOffProposeChan := r.ProposeChan
+	current = -1
 
 	for !r.Shutdown {
 
 		select {
-
+		/*
 		case propose := <-onOffProposeChan:
 			//got a Propose from a client
 			dlog.Printf("Proposal with op %d\n", propose.Command.Op)
@@ -316,7 +319,7 @@ func (r *Replica) run() {
 			//and to allow commands to accumulate for batching
 			onOffProposeChan = nil
 			break
-
+		*/
 		case <-fastClockChan:
 			//activate new proposals channel
 			onOffProposeChan = r.ProposeChan
@@ -418,6 +421,31 @@ func (r *Replica) run() {
 
 		case iid := <-r.instancesToRecover:
 			r.startRecoveryForInstance(iid.replica, iid.instance)
+		default:
+			if len(r.ProposeChan) > 0 {
+				//fmt.Println(len(r.ProposeChan))
+				//propose := <- onOffProposeChan
+                        	if current == -1 || r.instanceSpace[current].status == COMMITTED {
+					propose := <- onOffProposeChan
+					current = r.crtInstance
+                        		//got a Propose from a client
+                        		dlog.Printf("Proposal with op %d\n", propose.Command.Op)
+                        		r.handlePropose(propose)
+                        		//deactivate the new proposals channel to prioritize the handling of protocol messages
+                        		//onOffProposeChan = nil
+                        		//processing = false
+					//time.Sleep(5000)
+                        	}
+			}
+
+			//case propose := <-onOffProposeChan:
+                        //got a Propose from a client
+                        //dlog.Printf("Proposal with op %d\n", propose.Command.Op)
+                        //r.handlePropose(propose)
+                        //deactivate new proposals channel to prioritize the handling of other protocol messages,
+                        //and to allow commands to accumulate for batching
+                        //onOffProposeChan = nil
+                        break
 		}
 	}
 }
