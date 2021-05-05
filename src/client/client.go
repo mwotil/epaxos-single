@@ -38,8 +38,9 @@ var rarray []int
 var rsp []bool
 
 
-
 func main() {
+	roundTime := ""
+
 	flag.Parse()
 
 	runtime.GOMAXPROCS(*procs)
@@ -204,7 +205,9 @@ func main() {
 		}
 
 		after := time.Now()
-		fmt.Printf("Round took %v\n", after.Sub(before))
+		newRoundTime := fmt.Sprintf("Round took %v\n", after.Sub(before))
+
+		roundTime += newRoundTime
 
 		if *check {
 			for j := 0; j < n; j++ {
@@ -233,6 +236,7 @@ func main() {
 	fmt.Print("End time: ")
         fmt.Println(after_total.UnixNano())
 
+	fmt.Print(roundTime)
 
 	s := 0
 	for _, succ := range successful {
