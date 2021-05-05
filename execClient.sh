@@ -1,5 +1,10 @@
-for((c=1; c<=10; c++))
+NClient = 10
+NReq = 1000
+clientBatchSize=1
+rounds=$((reqsNb / clientBatchSize))
+
+for((c=1; c<=$NClient; c++))
 do
-  bin/client -maddr 10.142.15.203 -q 1000 -r 1000 & 
+  bin/client -maddr 10.142.15.203 -q $NReq -r $rounds & 
 #> logs/C-$c.out 2>&1 &
 done 
