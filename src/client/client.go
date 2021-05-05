@@ -14,6 +14,7 @@ import (
 	"runtime"
 	"state"
 	"time"
+	"os"
 )
 
 var masterAddr *string = flag.String("maddr", "", "Master address. Defaults to localhost")
@@ -40,6 +41,8 @@ var rsp []bool
 
 func main() {
 	roundTime := ""
+	logFile, _ := os.Create("log.out")	
+
 
 	flag.Parse()
 
@@ -236,7 +239,9 @@ func main() {
 	fmt.Print("End time: ")
         fmt.Println(after_total.UnixNano())
 
-	fmt.Print(roundTime)
+	//fmt.Print(roundTime)
+	logFile.WriteString(roundTime)
+	logFile.Close()
 
 	s := 0
 	for _, succ := range successful {
