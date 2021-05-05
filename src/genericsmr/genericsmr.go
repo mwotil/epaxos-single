@@ -91,7 +91,7 @@ func NewReplica(id int, peerAddrList []string, thrifty bool, exec bool, dreply b
 		make(map[uint8]*RPCPair),
 		genericsmrproto.GENERIC_SMR_BEACON_REPLY + 1,
 		make([]float64, len(peerAddrList)),
-		make(chan bool, 100)}
+		make(chan bool, 500)}
 
 	var err error
 
@@ -220,6 +220,7 @@ func (r *Replica) WaitForClientConnections() {
 			log.Println("Accept error:", err)
 			continue
 		}
+		//fmt.Println("ClientConnected")
 		go r.clientListener(conn)
 
 		r.OnClientConnect <- true
@@ -289,6 +290,7 @@ func (r *Replica) clientListener(conn net.Conn) {
 			if err = prop.Unmarshal(reader); err != nil {
 				break
 			}
+			//fmt.Println("add something")
 			r.ProposeChan <- &Propose{prop, writer}
 			break
 
