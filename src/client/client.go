@@ -41,7 +41,7 @@ var rsp []bool
 
 func main() {
 	roundTime := ""
-	logFile, _ := os.Create("log.out")	
+	logFile, _ := os.OpenFile("log.out", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 
 
 	flag.Parse()
