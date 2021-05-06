@@ -22,7 +22,7 @@ const FALSE = uint8(0)
 const DS = 5
 const ADAPT_TIME_SEC = 10
 
-const MAX_BATCH = 1000 // switch for testing original=1K
+const MAX_BATCH = 1 // switch for testing original=1K
 
 const COMMIT_GRACE_PERIOD = 10 * 1e9 //10 seconds
 
@@ -232,7 +232,7 @@ var slowClockChan chan bool
 
 func (r *Replica) fastClock() {
 	for !r.Shutdown {
-		time.Sleep(5 * 1e6) // 5 ms
+		time.Sleep(1000) // 5 ms
 		fastClockChan <- true
 	}
 }
@@ -297,7 +297,7 @@ func (r *Replica) run() {
 
 	//Enabled when batching for 5ms
 	//if MAX_BATCH > 100 {
-	//	go r.fastClock()
+	go r.fastClock()
 	//}
 
 	if r.Beacon {
@@ -322,7 +322,25 @@ func (r *Replica) run() {
 		*/
 		case <-fastClockChan:
 			//activate new proposals channel
-			onOffProposeChan = r.ProposeChan
+			//onOffProposeChan = r.ProposeChan
+			if len(r.ProposeChan) > 0 {
+                                //fmt.Println(len(r.ProposeChan))
+                                //propose := <- onOffProposeChan
+                                if current == -1 || r.InstanceSpace[r.Id][current].Status == epaxosproto.COMMITTED {
+                                        propose := <- onOffProposeChan
+                                        current = r.crtInstance[r.Id]
+                                        //got a Propose from a client
+                                        dlog.Printf("Proposal with op %d\n", propose.Command.Op)
+                                        r.handlePropose(propose)
+                                        //deactivate the new proposals channel to prioritize the handling of protocol messages
+                                        //onOffProposeChan = nil
+                                        //processing = false
+                                        //time.Sleep(5000)
+                                }
+                        }
+
+
+
 			break
 
 		case prepareS := <-r.prepareChan:
@@ -421,6 +439,7 @@ func (r *Replica) run() {
 
 		case iid := <-r.instancesToRecover:
 			r.startRecoveryForInstance(iid.replica, iid.instance)
+		/*
 		default:
 			if len(r.ProposeChan) > 0 {
 				//fmt.Println(len(r.ProposeChan))
@@ -437,7 +456,7 @@ func (r *Replica) run() {
 					//time.Sleep(5000)
                         	}
 			}
-
+		*/
 			//case propose := <-onOffProposeChan:
                         //got a Propose from a client
                         //dlog.Printf("Proposal with op %d\n", propose.Command.Op)
