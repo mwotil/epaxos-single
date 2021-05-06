@@ -161,7 +161,7 @@ var clockChan chan bool
 
 func (r *Replica) clock() {
 	for !r.Shutdown {
-		time.Sleep(1000)
+		time.Sleep(1000 * 50)
 		clockChan <- true
 	}
 }
