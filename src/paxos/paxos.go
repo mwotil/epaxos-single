@@ -18,7 +18,7 @@ const CHAN_BUFFER_SIZE = 200000
 const TRUE = uint8(1)
 const FALSE = uint8(0)
 
-const MAX_BATCH = 200
+const MAX_BATCH = 1
 
 
 var processing = false
@@ -185,7 +185,7 @@ func (r *Replica) run() {
 	}
 
 	clockChan = make(chan bool, 1)
-	//go r.clock()
+	go r.clock()
 
 	onOffProposeChan := r.ProposeChan
 	current = -1
@@ -195,7 +195,25 @@ func (r *Replica) run() {
 
 		case <-clockChan:
 			//activate the new proposals channel
-			onOffProposeChan = r.ProposeChan
+			//onOffProposeChan = r.ProposeChan
+			if len(r.ProposeChan) > 0 {
+                                //fmt.Println(len(r.ProposeChan))
+                                //propose := <- onOffProposeChan
+                                if current == -1 || r.instanceSpace[current].status == COMMITTED {
+                                        propose := <- onOffProposeChan
+                                        current = r.crtInstance
+                                        //got a Propose from a client
+                                        dlog.Printf("Proposal with op %d\n", propose.Command.Op)
+                                        r.handlePropose(propose)
+                                        //deactivate the new proposals channel to prioritize the handling of protocol messages
+                                        //onOffProposeChan = nil 
+                                        //processing = false
+                                        //time.Sleep(5000)
+                                }
+                        }
+
+
+
 			break
 
 		/*
@@ -254,7 +272,7 @@ func (r *Replica) run() {
 			break
 
 		 //case propose := <-onOffProposeChan:
-		default:
+		/*default:
 			if len(r.ProposeChan) > 0 {
 				//fmt.Println(len(r.ProposeChan))
 				//propose := <- onOffProposeChan
@@ -265,12 +283,13 @@ func (r *Replica) run() {
                         		dlog.Printf("Proposal with op %d\n", propose.Command.Op)
                         		r.handlePropose(propose)
                         		//deactivate the new proposals channel to prioritize the handling of protocol messages
-                        		//onOffProposeChan = nil
+                        		onOffProposeChan = nil
                         		//processing = false
 					//time.Sleep(5000)
                         	}
 			}
                         break
+		*/
 		}
 	}
 	//if current == 1{
