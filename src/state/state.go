@@ -28,6 +28,9 @@ type Command struct {
 	Op Operation
 	K  Key
 	V  Value
+
+	K1  Key
+	V1  Value
 }
 
 type State struct {
@@ -91,6 +94,7 @@ func (c *Command) Execute(st *State) Value {
 		*/
 
 		st.Store[c.K] = c.V
+		st.Store[c.K1] = c.V1
 		return c.V
 
 	case GET:

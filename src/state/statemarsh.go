@@ -16,11 +16,17 @@ func (t *Command) Marshal(w io.Writer) {
 	w.Write(bs)
 	binary.LittleEndian.PutUint64(bs, uint64(t.V))
 	w.Write(bs)
+
+	binary.LittleEndian.PutUint64(bs, uint64(t.K1))
+	w.Write(bs)
+	binary.LittleEndian.PutUint64(bs, uint64(t.V1))
+	w.Write(bs)
 }
 
 func (t *Command) Unmarshal(r io.Reader) error {
 	var b [8]byte
 	bs := b[:8]
+
 	bs = b[:1]
 	if _, err := io.ReadFull(r, bs); err != nil {
 		return err
@@ -35,6 +41,15 @@ func (t *Command) Unmarshal(r io.Reader) error {
 		return err
 	}
 	t.V = Value(binary.LittleEndian.Uint64(bs))
+
+	if _, err := io.ReadFull(r, bs); err != nil {
+		return err
+	}
+	t.K1 = Key(binary.LittleEndian.Uint64(bs))
+	if _, err := io.ReadFull(r, bs); err != nil {
+		return err
+	}
+	t.V1 = Value(binary.LittleEndian.Uint64(bs))
 	return nil
 }
 
