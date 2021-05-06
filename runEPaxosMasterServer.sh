@@ -1,3 +1,3 @@
-bin/master -N 3 &
+bin/master -N 5 &
 sleep 0.1
-bin/server -maddr 10.142.15.203 -addr 10.142.15.203 -e=true &
+bin/server -maddr 10.142.0.74 -addr 10.142.0.74 -e=true &
