@@ -1,3 +1,5 @@
+MASTER_SERVER_IP=""
+
 bin/master -N 5 &
 sleep 0.1
-bin/server -maddr 10.142.0.74 -addr 10.142.0.74 &
+bin/server -maddr ${MASTER_SERVER_IP} -addr ${MASTER_SERVER_IP} &

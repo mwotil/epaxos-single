@@ -1,0 +1,4 @@
+MASTER_SERVER_IP=""
+REPLICA_SERVER_IP=""
+
+bin/server -maddr ${MASTER_SERVER_IP} -addr ${REPLICA_SERVER_IP} &
