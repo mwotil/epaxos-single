@@ -28,5 +28,5 @@ with open('log.out') as log:
 
         line = log.readline()
 
-print("Median and 99th percentile in milliseconds:")
+print("Median and 99th percentile latency in milliseconds:")
 print(str(np.percentile(latencies, 50)) + ", " + str(np.percentile(latencies, 99)))
