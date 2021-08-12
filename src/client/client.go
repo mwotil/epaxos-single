@@ -130,7 +130,7 @@ func main() {
 
 	var id int32 = 0
 	done := make(chan bool, N)
-	args := genericsmrproto.Propose{id, state.Command{state.PUT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 0}
+	args := genericsmrproto.Propose{id, state.Command{state.PUT, 0, 0}, 0}
 
 	before_total := time.Now()
 	fmt.Print("Start time: ")
@@ -167,36 +167,7 @@ func main() {
 			}
 			args.Command.K = state.Key(karray[i])
 			args.Command.V = state.Value(i)
-			args.Command.K1 = state.Key(karray[i])
-			args.Command.V1 = state.Value(i)
-			args.Command.K2 = state.Key(karray[i])
-			args.Command.V2 = state.Value(i)
-			args.Command.K3 = state.Key(karray[i])
-			args.Command.V3 = state.Value(i)
-			args.Command.K4 = state.Key(karray[i])
-			args.Command.V4 = state.Value(i)
-			args.Command.K5 = state.Key(karray[i])
-			args.Command.V5 = state.Value(i)
-			args.Command.K6 = state.Key(karray[i])
-			args.Command.V6 = state.Value(i)
-			args.Command.K7 = state.Key(karray[i])
-			args.Command.V1 = state.Value(i)
-			args.Command.K8 = state.Key(karray[i])
-			args.Command.V8 = state.Value(i)
-			args.Command.K9 = state.Key(karray[i])
-			args.Command.V9 = state.Value(i)
-			args.Command.K10 = state.Key(karray[i])
-			args.Command.V10 = state.Value(i)
-			args.Command.K11 = state.Key(karray[i])
-			args.Command.V11 = state.Value(i)
-			args.Command.K12 = state.Key(karray[i])
-			args.Command.V12 = state.Value(i)
-			args.Command.K13 = state.Key(karray[i])
-			args.Command.V13 = state.Value(i)
-			args.Command.K14 = state.Key(karray[i])
-			args.Command.V14 = state.Value(i)
-			args.Command.K15 = state.Key(karray[i])
-			args.Command.V15 = state.Value(i)
+
 
 			//args.Timestamp = time.Now().UnixNano()
 			if !*fast {
