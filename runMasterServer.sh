@@ -1,4 +1,4 @@
-EPaxosEnabled=false
+EPaxosEnabled=true
 MASTER_SERVER_IP="10.10.1.1"
 
 bin/master -N 3 &
