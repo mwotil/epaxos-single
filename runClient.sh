@@ -3,9 +3,9 @@ rm log.out
 EPaxosEnabled=false
 MASTER_SERVER_IP="10.10.1.1"
 
-NClient=100
+NClient=2
 NReq=1000
-clientBatchSize=10
+clientBatchSize=1
 rounds=$((NReq / clientBatchSize))
 
 for((c=1; c<=$NClient; c++))
