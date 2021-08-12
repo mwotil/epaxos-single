@@ -9,7 +9,7 @@ with open('log.out') as log:
     line = log.readline()
     while line != '':  # The EOF char is an empty string
         # Extract the latency and its unit of time.
-        if(len(line.split(" ")) == 3):
+        if len(line.split(" ")) == 3:
             latency_unparsed = line.split(" ")[2]
         # If the output is irregular, ignore it.
         else:
