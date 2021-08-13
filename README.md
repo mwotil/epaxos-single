@@ -6,7 +6,7 @@
 ### Switching Between Paxos (NP) and EPaxos (NP)
 #### Paxos
 Do `git checkout paxos-no-pipelining-no-batching` to get the setup we used to get the results for Paxos (NP) in Table 1. Then, follow the instructions down below.
-#### Epaxos
+#### EPaxos
 Do `git checkout epaxos-no-pipelining-no-batching` to get the setup we used to get the results for EPaxos (NP) in Table 1. Then, follow the instructions down below.
 
 ### Installation (***For Each Machine***)
