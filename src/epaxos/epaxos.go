@@ -232,7 +232,7 @@ var slowClockChan chan bool
 
 func (r *Replica) fastClock() {
 	for !r.Shutdown {
-		time.Sleep(1e3 * 50) // 5 microseconds
+		time.Sleep(1e4 * 50) // 50 microseconds
 		fastClockChan <- true
 	}
 }
