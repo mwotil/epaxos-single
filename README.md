@@ -3,6 +3,12 @@
 1. 3 server machines
 2. 1 client machine
 
+### Switching Between Paxos (NP) and EPaxos (NP)
+#### Paxos
+Do `git checkout paxos-no-pipelining-no-batching` to get the setup we used to get the results for Paxos (NP) in Table 1. Then, follow the instructions down below.
+#### Epaxos
+Do `git checkout epaxos-no-pipelining-no-batching` to get the setup we used to get the results for EPaxos (NP) in Table 1. Then, follow the instructions down below.
+
 ### Installation (***For Each Machine***)
 1. Make sure Rabia is properly installed. Follow the instructions in the repo. This step is critical as it provides the go binary and python3.8 needed for testing.
 2. SSH into each of the VMs and do the following inside `~/go/src`:
@@ -78,9 +84,3 @@ If you see `SyntaxError: Non-ASCII character '\xc2' in file latency_analysis.py 
 it's likely because you're using python 2 instead of python 3. 
 #### Throughput analysis
 In your client machine, run `python3.8 throughput_analysis.py`. This will read the configuration specified in `execClient.sh` and the `run.txt` file you redirected the output of `execClient.sh` into, printing results into the shell.
-
-### Switching Between Paxos and EPaxos
-#### Paxos
-TODO
-#### Epaxos
-TODO
