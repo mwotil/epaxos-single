@@ -18,7 +18,7 @@ const CHAN_BUFFER_SIZE = 200000
 const TRUE = uint8(1)
 const FALSE = uint8(0)
 
-const MAX_BATCH = 200
+const MAX_BATCH = 1
 
 
 var processing = false
@@ -161,7 +161,7 @@ var clockChan chan bool
 
 func (r *Replica) clock() {
 	for !r.Shutdown {
-		time.Sleep(1000 * 50)
+		time.Sleep(1e2 * 50)
 		clockChan <- true
 	}
 }
