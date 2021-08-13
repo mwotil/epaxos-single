@@ -1,4 +1,4 @@
-EPaxosEnabled=true
+EPaxosEnabled=false
 MASTER_SERVER_IP="10.10.1.1"
 REPLICA_SERVER_IP="10.10.1.2"
 
