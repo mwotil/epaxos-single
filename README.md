@@ -1,7 +1,7 @@
 ## Testing Epaxos (NP) and Paxos (NP) in Cloudlab
 ### Experiment Setup
 1. 3 server machines
-2. 1 client machine
+2. 3 client machine
 
 ### Switching Between Paxos (NP) and EPaxos (NP)
 #### Paxos
@@ -69,8 +69,7 @@ All analysis is done on the client machine.
 
 We use `python3.8` for our analysis scripts, which should have been downloaded when you installed Rabia.
 
-Note that our latency analysis script requires the numpy package, which you can download using pip. We have provided a shell script that will install pip and numpy for python3.8
-that can be run with `. download_numpy.py`.
+Note that our latency analysis script requires the numpy package, which you can download using pip. Both pip and numpy should have been downloaded when you installed Rabia. We have also provided a shell script that will install pip and numpy for python3.8 that can be run with `. download_numpy.py`.
 
 #### Latency and Throughput Analysis
 In your client machine, run `. calculate_throughput_latency.sh`. This will run both `latency_analysis.py` and `throughput_analysis.py` using `python3.8`.
