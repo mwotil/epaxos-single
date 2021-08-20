@@ -1,7 +1,7 @@
 ## Testing Epaxos (NP) and Paxos (NP) in Cloudlab
 ### Experiment Setup
 1. 3 server machines
-2. 3 client machine
+2. 1 client machine
 
 ### Switching Between Paxos (NP) and EPaxos (NP)
 #### Paxos
