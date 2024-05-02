@@ -1,10 +1,10 @@
 rm log.out
 
 EPaxosEnabled=false
-MASTER_SERVER_IP="10.10.1.1"
+MASTER_SERVER_IP="129.232.230.130"
 
-NClient=2
-NReq=20000
+NClient=1
+NReq=100000
 clientBatchSize=1
 rounds=$((NReq / clientBatchSize))
 
