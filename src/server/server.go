@@ -19,9 +19,9 @@ import (
 	"time"
 )
 
-var portnum *int = flag.Int("port", 7070, "Port # to listen on. Defaults to 7070")
+var portnum *int = flag.Int("port", 9070, "Port # to listen on. Defaults to 9070")
 var masterAddr *string = flag.String("maddr", "", "Master address. Defaults to localhost.")
-var masterPort *int = flag.Int("mport", 7087, "Master port.  Defaults to 7087.")
+var masterPort *int = flag.Int("mport", 9087, "Master port.  Defaults to 9087.")
 var myAddr *string = flag.String("addr", "", "Server address (this machine). Defaults to localhost.")
 var doMencius *bool = flag.Bool("m", false, "Use Mencius as the replication protocol. Defaults to false.")
 var doGpaxos *bool = flag.Bool("g", false, "Use Generalized Paxos as the replication protocol. Defaults to false.")
@@ -74,7 +74,7 @@ func main() {
 	}
 
 	rpc.HandleHTTP()
-	//listen for RPC on a different port (8070 by default)
+	//listen for RPC on a different port (9070 by default)
 	l, err := net.Listen("tcp", fmt.Sprintf(":%d", *portnum+1000))
 	if err != nil {
 		log.Fatal("listen error:", err)
